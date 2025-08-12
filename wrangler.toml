@@ -4,14 +4,14 @@ compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
 [env.production]
-name = "ntl-calculator-prod"
+name = "ntl-calculator"
 
 [env.staging]
 name = "ntl-calculator-staging"
 
 # Uncomment to configure custom domain
-# [[env.production.routes]]
-# pattern = "calculator.yourdomain.com/*"
+[[env.production.routes]]
+pattern = "ntl-calculator.padosoft.com"
 
 # Configure limits
 # [limits]
