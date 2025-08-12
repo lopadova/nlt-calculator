@@ -1,0 +1,58 @@
+Crea un progetto completo Cloudflare Workers con Bun per un "Calcolatore Enterprise NLT vs Acquisto" di veicoli aziendali. 
+
+STRUTTURA PROGETTO:
+- package.json con dipendenze React 18, Wrangler, Bun types
+- wrangler.toml configurato per production/staging
+- src/index.js (worker entry point)
+- src/html.js (genera HTML con React embedded)
+- .gitignore completo
+- README.md dettagliato
+
+FUNZIONALITÀ CORE:
+1. SEZIONE NLT: canone mensile (€429), acconto iniziale (€0), aliquota fiscale (35%)
+2. SEZIONE ACQUISTO: prezzo listino (€32000), anticipo (€8000), 60 mesi, TAN 7.5%
+3. COSTI ACQUISTO: RC Auto (€1000), PAI (€40), Furto/Incendio (€0), Kasko (€0), manutenzione ordinaria (€400/anno), extra 5° anno (€800), extra 10° anno (€2500), costi incidenti ogni 5 anni (€0), km annui (10000), durata set gomme (40000km), costo set (€500), foratura 10 anni (€60)
+4. VALORI RESIDUI: 5 anni 35%, 10 anni 28%
+
+CALCOLI FISCALI NLT:
+- IVA 22% scorporata dal canone
+- Recupero IVA 40%
+- Deducibilità costo 70%
+- Formula: netto_mese = canone_ivato - (iva * 0.40) - (imponibile * 0.70 * aliquota)
+- Stesso calcolo per acconto iniziale
+- Mostra risparmio fiscale in tempo reale
+
+CALCOLI TCO ACQUISTO:
+- Anticipo + rate mensili + immatricolazione + assicurazioni*anni + manutenzione*anni + extra programmati + pneumatici (floor(km_tot/durata_set)*costo_set) + incidenti (floor(anni/5)*costo) - valore_residuo
+
+UI/UX REQUIREMENTS:
+- Layout responsive con Tailwind CSS
+- Grid 3 colonne per form fields ovvero tre textbox per riga anche se visualizzo da mobile
+- Debouncing 300ms per evitare perdita focus durante digitazione
+- Auto-calcolo real-time
+- Sezione risultati con tabella comparativa 5/10 anni
+- Indicatori visivi per convenienza (verde/rosso)
+- Gradiente enterprise per header risultati
+
+TECNOLOGIE:
+- Cloudflare Workers (no Node.js APIs)
+- React 18 via CDN (no build step)
+- Tailwind via CDN
+- Vanilla JS per worker logic
+- Bun per package management
+
+DEPLOYMENT:
+- Configurazione wrangler.toml completa
+- Script npm per dev/deploy
+- Health check endpoint (/health)
+- Security headers appropriati
+
+PARAMETRI DEFAULT (Kia Sportage):
+- Tutti i valori sopra specificati come default
+- Form con 3 textbox per riga in layout responsive
+- Labels italiani con suffissi unità misura
+
+FILE TSX GENERATO DA TUO ARTIFATTO:
+prendi spunto o usa direttamente dal file nlt-vs-acquisto-calculator.tsx
+
+Genera tutti i file necessari con codice production-ready, gestione errori, e documentazione completa nel README.md che spiega metodologia calcolo, teoria fiscale italiana, e istruzioni deployment.

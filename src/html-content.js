@@ -1,0 +1,463 @@
+// HTML content per Cloudflare Worker
+// Questo file contiene l'HTML inline per prestazioni ottimali
+
+export default `<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore Enterprise NLT vs Acquisto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .field-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+        .field-input {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.15s ease-in-out;
+        }
+        .field-input:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .field-suffix {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="mx-auto max-w-7xl p-6">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Calcolatore Enterprise NLT vs Acquisto</h1>
+            <p class="text-gray-600">Analisi comparativa per veicoli aziendali - parametri di default per Kia Sportage</p>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            
+            <!-- NLT Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                    <h2 class="text-xl font-semibold text-gray-900">NLT (Noleggio a Lungo Termine)</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="field-container">
+                        <span class="field-label">Canone mensile (IVA inclusa)</span>
+                        <input type="number" class="field-input" id="nltCanoneIvato" value="429" step="10" min="0">
+                        <span class="field-suffix">€/mese</span>
+                    </div>
+                    <div class="field-container">
+                        <span class="field-label">Acconto iniziale (IVA inclusa)</span>
+                        <input type="number" class="field-input" id="nltAcconto" value="0" step="100" min="0">
+                        <span class="field-suffix">€</span>
+                    </div>
+                    <div class="field-container">
+                        <span class="field-label">Aliquota fiscale effettiva</span>
+                        <input type="number" class="field-input" id="aliquotaEff" value="0.35" step="0.01" min="0" max="1">
+                        <span class="field-suffix">0.35 = 35%</span>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg mt-4">
+                    <h3 class="font-medium text-blue-900 mb-2">Parametri fiscali fissi:</h3>
+                    <ul class="text-sm text-blue-800 space-y-1">
+                        <li>• IVA: 22%</li>
+                        <li>• Recupero IVA: 40%</li>
+                        <li>• Deducibilità costo: 70%</li>
+                        <li class="font-bold text-blue-900" id="risparmioFiscale">
+                            • Risparmio fiscale calcolato automaticamente
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ACQUISTO Section -->
+            <div class="xl:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-4 h-4 bg-green-500 rounded"></div>
+                    <h2 class="text-xl font-semibold text-gray-900">Acquisto con Finanziamento</h2>
+                </div>
+                
+                <!-- Finanziamento -->
+                <div class="mb-6">
+                    <h3 class="font-medium text-gray-800 mb-3">Finanziamento</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="field-container">
+                            <span class="field-label">Prezzo listino</span>
+                            <input type="number" class="field-input" id="prezzoListino" value="32000" step="1000" min="0">
+                            <span class="field-suffix">€</span>
+                        </div>
+                        <div class="field-container">
+                            <span class="field-label">Anticipo (t0)</span>
+                            <input type="number" class="field-input" id="anticipo" value="8000" step="500" min="0">
+                            <span class="field-suffix">€</span>
+                        </div>
+                        <div class="field-container">
+                            <span class="field-label">Durata (mesi)</span>
+                            <input type="number" class="field-input" id="durataMesi" value="60" step="6" min="1">
+                            <span class="field-suffix">mesi</span>
+                        </div>
+                        <div class="field-container">
+                            <span class="field-label">TAN/TAEG annuo</span>
+                            <input type="number" class="field-input" id="tanAnnuale" value="0.075" step="0.001" min="0">
+                            <span class="field-suffix">0.075 = 7,5%</span>
+                        </div>
+                        <div class="field-container">
+                            <span class="field-label">Immatricolazione</span>
+                            <input type="number" class="field-input" id="immatricolazione" value="400" step="50" min="0">
+                            <span class="field-suffix">€</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 p-3 bg-green-50 rounded-lg">
+                        <div class="text-sm text-green-800" id="infoFinanziamento">
+                            <strong>Importo finanziato:</strong> €24.000 | <strong>Rata mensile:</strong> €450
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Altri costi -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- Assicurazioni -->
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-3">Assicurazioni (annue)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="field-container">
+                                <span class="field-label">RC Auto</span>
+                                <input type="number" class="field-input" id="rcAnnua" value="1000" step="50" min="0">
+                                <span class="field-suffix">€/anno</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">PAI</span>
+                                <input type="number" class="field-input" id="paiAnnua" value="40" step="10" min="0">
+                                <span class="field-suffix">€/anno</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Furto/Incendio</span>
+                                <input type="number" class="field-input" id="furtoIncAnnua" value="0" step="50" min="0">
+                                <span class="field-suffix">€/anno</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Kasko</span>
+                                <input type="number" class="field-input" id="kaskoAnnua" value="0" step="50" min="0">
+                                <span class="field-suffix">€/anno</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manutenzione -->
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-3">Manutenzione</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="field-container">
+                                <span class="field-label">Ordinaria (annua)</span>
+                                <input type="number" class="field-input" id="manutOrdAnnua" value="400" step="50" min="0">
+                                <span class="field-suffix">€/anno</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Extra a 5 anni</span>
+                                <input type="number" class="field-input" id="extra5" value="800" step="100" min="0">
+                                <span class="field-suffix">€</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Extra a 10 anni</span>
+                                <input type="number" class="field-input" id="extra10" value="2500" step="100" min="0">
+                                <span class="field-suffix">€</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Costo incidenti (ogni 5 anni)</span>
+                                <input type="number" class="field-input" id="costoIncidenti5anni" value="0" step="100" min="0">
+                                <span class="field-suffix">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pneumatici -->
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-3">Pneumatici & Percorrenza</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="field-container">
+                                <span class="field-label">Km annui</span>
+                                <input type="number" class="field-input" id="kmAnnui" value="10000" step="1000" min="0">
+                                <span class="field-suffix">km/anno</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Durata set gomme</span>
+                                <input type="number" class="field-input" id="durataSetKm" value="40000" step="5000" min="1">
+                                <span class="field-suffix">km</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Costo set gomme</span>
+                                <input type="number" class="field-input" id="costoSetPneus" value="500" step="50" min="0">
+                                <span class="field-suffix">€</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Foratura (10 anni)</span>
+                                <input type="number" class="field-input" id="foratura10y" value="60" step="10" min="0">
+                                <span class="field-suffix">€</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Valori residui -->
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-3">Valori Residui</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="field-container">
+                                <span class="field-label">Valore residuo 5 anni</span>
+                                <input type="number" class="field-input" id="residuo5" value="0.29" step="0.01" min="0" max="1">
+                                <span class="field-suffix">% su listino</span>
+                            </div>
+                            <div class="field-container">
+                                <span class="field-label">Valore residuo 10 anni</span>
+                                <input type="number" class="field-input" id="residuo10" value="0.15" step="0.01" min="0" max="1">
+                                <span class="field-suffix">% su listino</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risultati -->
+        <div id="risultati" class="mt-6 bg-white rounded-xl shadow-lg overflow-hidden hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-green-600 p-6">
+                <h2 class="text-2xl font-bold text-white">Analisi Comparativa dei Costi</h2>
+                <p class="text-blue-100 mt-1">Totale netto per periodo di possesso</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="text-left p-4 font-semibold text-gray-900 border-r">Scenario</th>
+                                <th class="text-left p-4 font-semibold text-gray-900 border-r">5 anni</th>
+                                <th class="text-left p-4 font-semibold text-gray-900 border-r">10 anni</th>
+                                <th class="text-left p-4 font-semibold text-gray-900">Differenza</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabellaRisultati">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <h3 class="font-medium text-amber-800 mb-2">Note metodologiche:</h3>
+                    <ul class="text-sm text-amber-700 space-y-1">
+                        <li>• <strong>Acquisto:</strong> Include anticipo, rate, immatricolazione, assicurazioni complete, manutenzioni, pneumatici, costi incidenti. Sottrae valore residuo stimato.</li>
+                        <li>• <strong>NLT:</strong> Calcolo netto post-deduzioni fiscali (70% imponibile, 40% IVA recuperabile). Include acconto iniziale se previsto.</li>
+                        <li>• <strong>Incidenti:</strong> Costo applicato ogni 5 anni (1 volta per 5 anni, 2 volte per 10 anni).</li>
+                        <li>• <strong>Esclusioni:</strong> Bollo auto escluso da entrambi gli scenari come da specifica.</li>
+                        <li>• <strong>Aggiornamenti:</strong> I calcoli si aggiornano automaticamente al variare dei parametri.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funzioni di utilità
+        const fmtEuro = (n) => new Intl.NumberFormat('it-IT', { 
+            style: 'currency', 
+            currency: 'EUR', 
+            maximumFractionDigits: 2 
+        }).format(isFinite(n) ? n : 0);
+
+        function rataMensile(importo, tassoAnnuale, mesi) {
+            const r = tassoAnnuale / 12;
+            if (importo <= 0 || mesi <= 0) return 0;
+            if (r === 0) return importo / mesi;
+            const a = Math.pow(1 + r, mesi);
+            return (importo * r * a) / (a - 1);
+        }
+
+        // Costanti fiscali
+        const IVA_PERC = 0.22;
+        const RECUP_IVA_PERC = 0.40;
+        const DED_COSTO_PERC = 0.70;
+
+        // Funzioni di calcolo
+        function nltTotale(canoneIvatoMese, accontoIniziale, anni, aliquotaEff) {
+            const imponibile = canoneIvatoMese * 100 / 122;
+            const iva = canoneIvatoMese - imponibile;
+            const recuperoIva = iva * RECUP_IVA_PERC;
+            const recuperoDeduzione = imponibile * DED_COSTO_PERC * aliquotaEff;
+            const nettoMese = canoneIvatoMese - recuperoIva - recuperoDeduzione;
+            
+            const imponibileAcconto = accontoIniziale * 100 / 122;
+            const ivaAcconto = accontoIniziale - imponibileAcconto;
+            const recuperoIvaAcconto = ivaAcconto * RECUP_IVA_PERC;
+            const recuperoDeduzioneAcconto = imponibileAcconto * DED_COSTO_PERC * aliquotaEff;
+            const nettoAcconto = accontoIniziale - recuperoIvaAcconto - recuperoDeduzioneAcconto;
+            
+            return nettoMese * 12 * anni + nettoAcconto;
+        }
+
+        function calcolaRisparmioFiscale(canoneIvatoMese, accontoIniziale, anni, aliquotaEff) {
+            const costoLordoCanoni = canoneIvatoMese * 12 * anni;
+            const costoLordoTotale = costoLordoCanoni + accontoIniziale;
+            const costoNettoTotale = nltTotale(canoneIvatoMese, accontoIniziale, anni, aliquotaEff);
+            return costoLordoTotale - costoNettoTotale;
+        }
+
+        function acquistoTotale(anni, params) {
+            const mesiPossesso = anni * 12;
+            const mesiRatePagate = Math.min(mesiPossesso, params.durataMesi);
+            
+            const assicurazioneAnnua = params.rcAnnua + params.paiAnnua + params.furtoIncAnnua + params.kaskoAnnua;
+            const manutTot = params.manutOrdAnnua * anni;
+            const extra = anni >= 10 ? params.extra10 : anni >= 5 ? params.extra5 : 0;
+            
+            const cicliIncidenti = Math.floor(anni / 5);
+            const costoIncidentiTot = params.costoIncidenti5anni * cicliIncidenti;
+            
+            const kmTot = params.kmAnnui * anni;
+            const setNecessari = Math.floor(kmTot / Math.max(1, params.durataSetKm));
+            const pneusTot = setNecessari * params.costoSetPneus + (anni >= 10 ? params.foratura10y : 0);
+            
+            const residuoPerc = anni === 5 ? params.residuo5 : params.residuo10;
+            const valoreResiduo = params.prezzoListino * residuoPerc;
+            
+            const importoFinanziato = Math.max(0, params.prezzoListino - params.anticipo);
+            const rata = rataMensile(importoFinanziato, params.tanAnnuale, params.durataMesi);
+            
+            return params.anticipo + 
+                   rata * mesiRatePagate + 
+                   params.immatricolazione + 
+                   assicurazioneAnnua * anni + 
+                   manutTot + 
+                   extra + 
+                   pneusTot + 
+                   costoIncidentiTot - 
+                   valoreResiduo;
+        }
+
+        // Raccolta parametri
+        function getParams() {
+            return {
+                nltCanoneIvato: parseFloat(document.getElementById('nltCanoneIvato').value) || 0,
+                nltAcconto: parseFloat(document.getElementById('nltAcconto').value) || 0,
+                aliquotaEff: parseFloat(document.getElementById('aliquotaEff').value) || 0,
+                prezzoListino: parseFloat(document.getElementById('prezzoListino').value) || 0,
+                anticipo: parseFloat(document.getElementById('anticipo').value) || 0,
+                durataMesi: parseFloat(document.getElementById('durataMesi').value) || 1,
+                tanAnnuale: parseFloat(document.getElementById('tanAnnuale').value) || 0,
+                immatricolazione: parseFloat(document.getElementById('immatricolazione').value) || 0,
+                rcAnnua: parseFloat(document.getElementById('rcAnnua').value) || 0,
+                paiAnnua: parseFloat(document.getElementById('paiAnnua').value) || 0,
+                furtoIncAnnua: parseFloat(document.getElementById('furtoIncAnnua').value) || 0,
+                kaskoAnnua: parseFloat(document.getElementById('kaskoAnnua').value) || 0,
+                manutOrdAnnua: parseFloat(document.getElementById('manutOrdAnnua').value) || 0,
+                extra5: parseFloat(document.getElementById('extra5').value) || 0,
+                extra10: parseFloat(document.getElementById('extra10').value) || 0,
+                costoIncidenti5anni: parseFloat(document.getElementById('costoIncidenti5anni').value) || 0,
+                kmAnnui: parseFloat(document.getElementById('kmAnnui').value) || 0,
+                durataSetKm: parseFloat(document.getElementById('durataSetKm').value) || 1,
+                costoSetPneus: parseFloat(document.getElementById('costoSetPneus').value) || 0,
+                foratura10y: parseFloat(document.getElementById('foratura10y').value) || 0,
+                residuo5: parseFloat(document.getElementById('residuo5').value) || 0,
+                residuo10: parseFloat(document.getElementById('residuo10').value) || 0
+            };
+        }
+
+        // Calcolo e aggiornamento
+        function calcolaERenderizza() {
+            const params = getParams();
+            
+            // Aggiorna info finanziamento
+            const importoFinanziato = Math.max(0, params.prezzoListino - params.anticipo);
+            const rata = rataMensile(importoFinanziato, params.tanAnnuale, params.durataMesi);
+            document.getElementById('infoFinanziamento').innerHTML = 
+                \`<strong>Importo finanziato:</strong> \${fmtEuro(importoFinanziato)} | <strong>Rata mensile:</strong> \${fmtEuro(rata)}\`;
+
+            // Aggiorna risparmio fiscale
+            const risparmio5 = calcolaRisparmioFiscale(params.nltCanoneIvato, params.nltAcconto, 5, params.aliquotaEff);
+            const risparmio10 = calcolaRisparmioFiscale(params.nltCanoneIvato, params.nltAcconto, 10, params.aliquotaEff);
+            document.getElementById('risparmioFiscale').innerHTML = 
+                \`• Risparmio fiscale in 5 anni: \${fmtEuro(risparmio5)} e 10 anni: \${fmtEuro(risparmio10)}\`;
+
+            // Calcoli principali
+            const nlt5 = nltTotale(params.nltCanoneIvato, params.nltAcconto, 5, params.aliquotaEff);
+            const nlt10 = nltTotale(params.nltCanoneIvato, params.nltAcconto, 10, params.aliquotaEff);
+            const acq5 = acquistoTotale(5, params);
+            const acq10 = acquistoTotale(10, params);
+
+            // Render tabella
+            const tabella = document.getElementById('tabellaRisultati');
+            tabella.innerHTML = \`
+                <tr class="border-t hover:bg-blue-50 transition-colors">
+                    <td class="p-4 border-r">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-blue-500 rounded"></div>
+                            <span class="font-medium">NLT</span>
+                        </div>
+                    </td>
+                    <td class="p-4 border-r text-lg font-semibold text-blue-600">\${fmtEuro(nlt5)}</td>
+                    <td class="p-4 border-r text-lg font-semibold text-blue-600">\${fmtEuro(nlt10)}</td>
+                    <td class="p-4 text-lg font-semibold text-blue-600">\${fmtEuro(nlt10 - nlt5)}</td>
+                </tr>
+                <tr class="border-t hover:bg-green-50 transition-colors">
+                    <td class="p-4 border-r">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-green-500 rounded"></div>
+                            <span class="font-medium">Acquisto</span>
+                        </div>
+                    </td>
+                    <td class="p-4 border-r text-lg font-semibold text-green-600">\${fmtEuro(acq5)}</td>
+                    <td class="p-4 border-r text-lg font-semibold text-green-600">\${fmtEuro(acq10)}</td>
+                    <td class="p-4 text-lg font-semibold text-green-600">\${fmtEuro(acq10 - acq5)}</td>
+                </tr>
+                <tr class="border-t bg-gray-100 font-bold">
+                    <td class="p-4 border-r">Risparmio Acquisto vs NLT</td>
+                    <td class="p-4 border-r text-lg \${acq5 < nlt5 ? 'text-green-600' : 'text-red-600'}">
+                        \${fmtEuro(nlt5 - acq5)}
+                    </td>
+                    <td class="p-4 border-r text-lg \${acq10 < nlt10 ? 'text-green-600' : 'text-red-600'}">
+                        \${fmtEuro(nlt10 - acq10)}
+                    </td>
+                    <td class="p-4 text-lg">
+                        \${acq5 < nlt5 && acq10 < nlt10 ? 
+                            '<span class="text-green-600">✓ Acquisto conveniente</span>' :
+                            '<span class="text-red-600">✗ NLT più conveniente</span>'
+                        }
+                    </td>
+                </tr>
+            \`;
+
+            document.getElementById('risultati').classList.remove('hidden');
+        }
+
+        // Debounced update
+        let debounceTimer;
+        function debouncedUpdate() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(calcolaERenderizza, 300);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', debouncedUpdate);
+            });
+            
+            // Calcolo iniziale
+            calcolaERenderizza();
+        });
+    </script>
+</body>
+</html>`;

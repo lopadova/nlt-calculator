@@ -1,0 +1,26 @@
+{
+  "name": "ntl-calculator",
+  "version": "1.0.0",
+  "description": "Calcolatore Enterprise NLT vs Acquisto - Cloudflare Workers",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "bun build src/index.js --outdir=dist --target=browser --minify",
+    "preview": "wrangler dev --local",
+    "start": "bun run dev"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20250812.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.13"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["cloudflare-workers", "calculator", "nlt", "fleet", "enterprise"],
+  "author": "",
+  "license": "MIT"
+}
